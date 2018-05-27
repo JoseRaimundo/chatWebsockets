@@ -32,8 +32,8 @@ public class ServerWebSocket {
     private static HashMap<String, Boolean> geral_usuarios = new HashMap<String, Boolean>();
 
     @OnOpen
-    public void conectar(Session ses, @PathParam("sala")String sala, @PathParam("usuario")String usuario){
-       System.out.println("Alguém tentou se conctar");
+    public void conectar(Session ses, @PathParam("sala")String sala, @PathParam("usuario")String usuario) throws IOException{
+       System.out.println("Alguém tentou se conectar");
        if(geral_salas.containsKey(sala)){
            geral_salas.get(sala).put(usuario, ses);
        }else{
@@ -41,6 +41,10 @@ public class ServerWebSocket {
            sala_temp.put(usuario, ses);
            geral_salas.put(sala, sala_temp);
        }
+       
+//       for (Session session : geral_salas.get(sala).values()){
+//           session.getBasicRemote().sendText(usuario);
+//       }
     }
     
     @OnMessage

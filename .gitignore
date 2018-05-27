@@ -1,1 +1,6 @@
 /build/
+/dist/
+/nbproject/private/
+/Servidor/build/
+/Servidor/dist/
+/Servidor/nbproject/private/
