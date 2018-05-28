@@ -14,13 +14,17 @@ import javax.websocket.Session;
  * @author gpds-gpu
  */
 public class Usuario {
+    //session para armazenar as informações de conexão
     private Session session;
-    private String  nome_key;
+    //id para o usuario
+    private String  id;
+    //alias para o usuario 
     private String  nome_user;
+    //status flag para determinar se ele é o criador
     private boolean status;
     
     public Usuario(String nome, Session session, boolean status){
-        this.nome_key = session.getId();
+        this.id = session.getId();
         this.nome_user = nome;
         this.session = session;
         this.status = true;        
@@ -35,22 +39,16 @@ public class Usuario {
     }
     
     public String getId(){
-        return this.nome_key;
-    }
-    
-    public void setStatus(boolean status){
-        this.status = status;
-    }
-    
-   
-    
-    public boolean setStatus(){
-        return this.status;
+        return this.id;
     }
     
     public Session getSession(){
         return this.session;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "session=" + session + ", nome_key=" + id + ", nome_user=" + nome_user + ", status=" + status + '}';
+    }
    
 }
