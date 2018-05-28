@@ -17,57 +17,53 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 /**
- * consertar: Verificar forma de mudar o nome vinculado a session
  * @author talitha
  */
 @ServerEndpoint("/chat/{sala}/{usuario}")
 public class ServerWebSocket {
-    
-    //ver possibilidades de usar duas maps para proibir usuário em mais chats
-    
-    //aqui será uma map1<map, string> de map2<session, string>    
-    //map1 = chat_geral<nome_do_sala, sala> 
-    //map2 = sala_do_chat<nome_usuario, session_usuario>    
-    private static HashMap<String, HashMap<String, Session>> geral_salas = new HashMap<String, HashMap<String, Session>>();
-    private static HashMap<String, Boolean> geral_usuarios = new HashMap<String, Boolean>();
+ 
+    private static HashMap<String, Sala> salas = new HashMap<String, Sala>();
 
     @OnOpen
     public void conectar(Session ses, @PathParam("sala")String sala, @PathParam("usuario")String usuario) throws IOException{
-       System.out.println("Alguém tentou se conectar");
-       if(geral_salas.containsKey(sala)){
-           geral_salas.get(sala).put(usuario, ses);
+       if(salas.containsKey(sala)){
+           if(salas.get(sala).buscaPeloNome(usuario) != null){
+               //cria com nome alternativo
+           }else{
+               // falta verificar se o usuários já está em alguma sala
+               salas.get(sala).addUsuario(new Usuario(usuario, ses, false));
+           }
        }else{
-           HashMap<String, Session> sala_temp = new HashMap<>();
-           sala_temp.put(usuario, ses);
-           geral_salas.put(sala, sala_temp);
+           //cria uma sala e um criador 
+           //falta verificar se o criador já está em outra sala
+           salas.put(sala, new Sala(sala, new Usuario(usuario, ses, true)));
        }
-       
-//       for (Session session : geral_salas.get(sala).values()){
-//           session.getBasicRemote().sendText(usuario);
-//       }
     }
     
     @OnMessage
-    public void onMessage(String message, @PathParam("sala")String sala, @PathParam("usuario")String usuario) throws IOException {
+    public void onMessage(Session ses, String message, @PathParam("sala")String sala) throws IOException {
+        //pega a hora local
         Calendar data = Calendar.getInstance();
+        //quabrando a mensagem
         String[] list = message.split(" ");
-
+        //pega as informações de quem mandou a mensagem
+        Usuario remetente       = salas.get(sala).buscaPeloID(ses.getId());
+        System.out.println(">>>>>>>>> " + remetente.getNome());
         if (list[0].equals("send")) {
             if(list[1].equals("-u")){
-                Session temp_ses  = geral_salas.get(sala).get(list[2]);
-                temp_ses.getBasicRemote().sendText(usuario + " | "  + data.getTime() + " | reservadamente : " + message);
-            }else{
-                for (Session ses : geral_salas.get(sala).values()) {
-                    ses.getBasicRemote().sendText(usuario + " | "  + data.getTime() + " : " + message);
+                Usuario destinatario  = salas.get(sala).buscaPeloNome(list[2]);
+                destinatario.getSession().getBasicRemote().sendText(remetente.getNome() + " | "  + data.getTime() + " | reservadamente : " + message);
+            }else{               
+                for (Usuario user : salas.get(sala).todosUsuarios()) {
+                    user.getSession().getBasicRemote().sendText(remetente.getNome() + " | "  + data.getTime() + " : " + message);
                 }
             }
    
         }else if(list[0].equals("rename")){
-            Session temp_ses = geral_salas.get(sala).get(usuario);
-            geral_salas.get(sala).remove(usuario);
-            geral_salas.get(sala).put(list[1], temp_ses);
-            for (Session ses : geral_salas.get(sala).values()) {
-                    ses.getBasicRemote().sendText(usuario + " | rename to > " + list[1] + data.getTime() + " : ");
+            String antigo_nome = remetente.getNome();
+            salas.get(sala).alteraNome(remetente.getId(), list[1]);
+            for (Usuario user : salas.get(sala).todosUsuarios()) {
+                 user.getSession().getBasicRemote().sendText(antigo_nome + " | " + data.getTime() + " | rename > " + list[1] );
             }
         }
    

@@ -30,9 +30,19 @@ public class Usuario {
         this.nome_user = nome;
     }
     
+    public String getNome(){
+        return this.nome_user;
+    }
+    
+    public String getId(){
+        return this.nome_key;
+    }
+    
     public void setStatus(boolean status){
         this.status = status;
     }
+    
+   
     
     public boolean setStatus(){
         return this.status;
@@ -41,5 +51,6 @@ public class Usuario {
     public Session getSession(){
         return this.session;
     }
+    
    
 }

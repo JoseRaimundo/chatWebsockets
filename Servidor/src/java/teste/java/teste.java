@@ -34,16 +34,17 @@ public class teste {
 
 
 		HashMap<String, String> mapa = new HashMap<String, String>();
-		mapa.put("Diegoo", " Ricardo");
-		mapa.put(null, "Teste");
-		mapa.put(null, "Outro Teste");
-		mapa.put("Diego", " ;)");
+		mapa.put("a", "primeiro");
+		mapa.put("b", "segundo");
+		mapa.put("c", "terceiro");
+		mapa.put("d", "quarto");
+                
 		Set<String> chaves = mapa.keySet();
 		for (Iterator<String> iterator = chaves.iterator(); iterator.hasNext();)
 		{
 			String chave = iterator.next();
 		
-				System.out.println(chave + mapa.get(chave));
+				System.out.println(chave + " " + mapa.get(chave));
 		}
 	}	
 
