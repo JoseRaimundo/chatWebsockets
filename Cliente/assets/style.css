@@ -1,3 +1,9 @@
+body{
+  padding-right: 50px;
+  padding-left: 50px;
+  padding-bottom: 50px;
+}
+
 h4{
   text-align: center;
   color: grey;
