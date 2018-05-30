@@ -27,6 +27,10 @@ public class Sala {
     public void addUsuario(Usuario usuario){
         this.sala.put(usuario.getId(), usuario);
     }
+    
+    public String getNome(){
+        return this.nome;
+    }
        
     
     //busca um usuário pelo id
@@ -79,8 +83,14 @@ public class Sala {
 
     @Override
     public String toString() {
-        return "Sala{" + "nome=" + nome + '}';
+        String saida = "$Sala: " + nome + "\n";
+        Set<String> chaves = sala.keySet();
+        for (String chave : chaves) {
+            saida += sala.get(chave).getNome()+ "\n";
+        }
+        return saida;
     }
+
     
     
     

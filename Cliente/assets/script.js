@@ -73,11 +73,13 @@ new function() {
 		if (type === 'SENT') {
 			msg.addClass('sent');
 		}
+
 		var usuarios = $('#onlineUsers');
 		var messages = $('#messages');
 
-		if(data.charAt(0)==='-'){
-			usuarios.append(msg);
+		if(data.charAt(0)==='$'){
+			$('#onlineUsers').html('');
+			$('#onlineUsers').html(msg);
 		}else {
 			messages.append(msg);
 			var msgBox = messages.get(0);

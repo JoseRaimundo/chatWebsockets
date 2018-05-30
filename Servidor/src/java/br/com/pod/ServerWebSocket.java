@@ -43,14 +43,14 @@ public class ServerWebSocket {
         }
     }
     
-    public void usuariosOnline(Sala sala, String usuario){
+    public void usuariosOnline(Sala sala){
         for (Usuario user : sala.todosUsuarios()) {
             try {
-                user.getSession().getBasicRemote().sendText("-"+usuario);
+                user.getSession().getBasicRemote().sendText(sala.toString());
             } catch (IOException ex) {
                 System.out.println("Erro no sendBroadCast " + ex.toString());
             }
-        }           
+        }  
     }    
     
     @OnOpen
@@ -78,7 +78,7 @@ public class ServerWebSocket {
            ses.getBasicRemote().sendText("Sala: " + sala + " Criada!");
        }
         //Exibe os usuários online naquela sala
-        usuariosOnline(salas.get(sala), nome);
+        usuariosOnline(salas.get(sala));
 
     }
     
@@ -108,6 +108,7 @@ public class ServerWebSocket {
                 salas.get(sala).alteraNome(remetente.getId(), list[1]);
                 sendBroadCast(salas.get(sala), antigo_nome, "Renomeado para " + list[1]);
             }
+             usuariosOnline(salas.get(sala));
         }else{
             //caso o usuário informe o protocolo errado
             ses.getBasicRemote().sendText("Verifique os protocolos do chat:\n"
@@ -115,6 +116,7 @@ public class ServerWebSocket {
                     + "Para enviar uma mensagem para alguém especifico: send -u <destinatario> <mensagem>\n"
                     + "Para renomear: rename <nome que deseja>");
         }
+        
     }
     
     
@@ -125,6 +127,7 @@ public class ServerWebSocket {
         salas.get(sala).removeUsuario(ses.getId());
         //notifica todo mundo que alguém sai da sala
         sendBroadCast(salas.get(sala), usuario.getNome(), "Saiu da sala!");
+        usuariosOnline(salas.get(sala));
         //se for o ultimo usuário da sala, deleta a sala
         if (salas.get(sala).salaVazia()) {
             salas.remove(sala);
