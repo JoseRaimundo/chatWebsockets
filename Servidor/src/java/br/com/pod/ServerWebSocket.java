@@ -38,12 +38,20 @@ public class ServerWebSocket {
             try {
                 user.getSession().getBasicRemote().sendText(usuario + " " + new SimpleDateFormat("hh:mm:ss").format(data.getTime()) + " : " + mensagem);
             } catch (IOException ex) {
-                System.out.println("Erro no sendBreadCast " + ex.toString());
+                System.out.println("Erro no sendBroadCast " + ex.toString());
             }
         }
     }
-
     
+    public void usuariosOnline(Sala sala, String usuario){
+        for (Usuario user : sala.todosUsuarios()) {
+            try {
+                user.getSession().getBasicRemote().sendText("-"+usuario);
+            } catch (IOException ex) {
+                System.out.println("Erro no sendBroadCast " + ex.toString());
+            }
+        }           
+    }    
     
     @OnOpen
     public void conectar(Session ses, @PathParam("sala")String sala, @PathParam("usuario")String nome) throws IOException{
@@ -60,7 +68,7 @@ public class ServerWebSocket {
             salas.get(sala).addUsuario(new Usuario(nome, ses, false));
 
            //notifica todo mundo sobre o usuário que entrou
-            sendBroadCast(salas.get(sala), nome, "Entrou na sala!");
+            sendBroadCast(salas.get(sala), nome, "Entrou na sala!");        
 
        }else{
            //cria uma sala e atribui um criador 
@@ -69,6 +77,9 @@ public class ServerWebSocket {
            //informa para o criador que a sala foi criada
            ses.getBasicRemote().sendText("Sala: " + sala + " Criada!");
        }
+        //Exibe os usuários online naquela sala
+        usuariosOnline(salas.get(sala), nome);
+
     }
     
     

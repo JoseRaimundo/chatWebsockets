@@ -43,12 +43,15 @@ new function() {
 		$('#messages').html('');
 	}
 
-	var onOpen = function() {
+	var onOpen = function(event) {
 		console.log('OPENED: ' + serverUrl.val());
 		connected = true;
 		connectionStatus.text('EXECUTANDO');
 		sendMessage.removeAttr('disabled');
 		sendButton.removeAttr('disabled');
+
+    var data = event.data;
+		addMessage(data);
 	};
 
 	var onClose = function() {
@@ -70,14 +73,19 @@ new function() {
 		if (type === 'SENT') {
 			msg.addClass('sent');
 		}
+		var usuarios = $('#onlineUsers');
 		var messages = $('#messages');
-		messages.append(msg);
 
-		var msgBox = messages.get(0);
-		while (msgBox.childNodes.length > 1000) {
-			msgBox.removeChild(msgBox.firstChild);
+		if(data.charAt(0)==='-'){
+			usuarios.append(msg);
+		}else {
+			messages.append(msg);
+			var msgBox = messages.get(0);
+			while (msgBox.childNodes.length > 1000) {
+				msgBox.removeChild(msgBox.firstChild);
+			}
+			msgBox.scrollTop = msgBox.scrollHeight;
 		}
-		msgBox.scrollTop = msgBox.scrollHeight;
 	}
 
 	WebSocketClient = {
