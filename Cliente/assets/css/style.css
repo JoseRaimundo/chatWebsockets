@@ -17,7 +17,7 @@ h4{
    float: right;
    margin-top: -12%;
    width: 42%;
-   margin-right: -2%;
+   margin-right: 0%;
 }
 
 #disconnectButton {
@@ -37,6 +37,18 @@ h4{
 .cardUsers {
 	height: 180px;
   overflow-y: scroll;
+}
+
+.btnEnviar{
+  margin-top: -3%;
+}
+
+.btns{
+  margin-top: 2%;
+}
+
+.divMsgs{
+  margin-top: -2%;
 }
 
 #messages pre.sent {

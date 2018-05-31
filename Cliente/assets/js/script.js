@@ -65,7 +65,7 @@ new function() {
 	};
 
 	var onError = function(event) {
-		alert(event.data);
+		alert('Ocorreu um erro: ' +event.data+ '. Tente novamente.');
 	}
 
 	var addMessage = function(data, type) {
