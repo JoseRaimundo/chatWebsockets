@@ -11,7 +11,7 @@ import javax.websocket.Session;
 
 /**
  *
- * @author gpds-gpu
+ * @author pc
  */
 public class Usuario {
     //session para armazenar as informações de conexão

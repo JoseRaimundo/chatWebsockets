@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  *
- * @author raimundo
+ * @author pc
  */
 public class Sala {
 
