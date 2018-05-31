@@ -64,7 +64,9 @@ public class ServerWebSocket {
            if(global_nomes.containsKey(nome) ){
                nome = atribuiNome(global_nomes, nome);
                //informa o motivo do nome alternativo
-               ses.getBasicRemote().sendText("O nome solicitado já está em uso, seu nome foi configurado como " + nome + " (Vocês pode renomear utilizando o comando [rename <novo_nome>])");
+               ses.getBasicRemote().sendText("O nome solicitado já está em uso, seu nome foi \n"
+                                           + "configurado como " + nome + " (Você pode renomeá-lo \n"
+                                           + "utilizando o comando [rename <novo_nome>])");
            }
            //adiciona um novo usuário na sala
             salas.get(sala).addUsuario(new Usuario(nome, ses, false));
@@ -79,7 +81,7 @@ public class ServerWebSocket {
                //informa o motivo do nome alternativo
                ses.getBasicRemote().sendText("O nome solicitado já está em uso em outra sala, \n"
                                               + "seu nome foi configurado como " + nome + " \n"
-                                              + "(Você pode renomear utilizando o comando \n"
+                                              + "(Você pode renomeá-lo utilizando o comando \n"
                                               + "[rename <novo_nome>])");
            }
            //cria uma sala e atribui um criador 
