@@ -74,19 +74,21 @@ new function() {
 			msg.addClass('sent');
 		}
 
-		var usuarios = $('#onlineUsers');
 		var messages = $('#messages');
+		var historico = $('#log');
 
 		if(data.charAt(0)==='$'){
 			$('#onlineUsers').html('');
 			$('#onlineUsers').html(msg);
-		}else {
+		} else if(data.charAt(0)==='-'){
 			messages.append(msg);
 			var msgBox = messages.get(0);
 			while (msgBox.childNodes.length > 1000) {
 				msgBox.removeChild(msgBox.firstChild);
 			}
 			msgBox.scrollTop = msgBox.scrollHeight;
+		} else {
+			historico.append(msg);
 		}
 	}
 

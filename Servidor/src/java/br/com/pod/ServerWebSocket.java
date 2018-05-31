@@ -22,12 +22,12 @@ public class ServerWebSocket {
     private static Map<String, Sala> salas = Collections.synchronizedMap(new HashMap<String, Sala>());
     private static Map<String, String> global_nomes = Collections.synchronizedMap(new HashMap<String, String>());
      
-    //este método manda uma mensagme formatada em breadcast (para todos usuários de uma sala especifica)
+    //este método manda uma mensagem formatada em broadcast (para todos usuários de uma sala especifica)
     public void sendBroadCast(Sala sala,  String usuario, String mensagem){
         Calendar data = Calendar.getInstance();
         for (Usuario user : sala.todosUsuarios()) {
             try {
-                user.getSession().getBasicRemote().sendText(usuario + " " + new SimpleDateFormat("hh:mm:ss").format(data.getTime()) + " : " + mensagem);
+                user.getSession().getBasicRemote().sendText("- "+usuario + " " + new SimpleDateFormat("hh:mm:ss").format(data.getTime()) + " : " + mensagem);
             } catch (IOException ex) {
                 System.out.println("Erro no sendBroadCast " + ex.toString());
             }
@@ -77,12 +77,15 @@ public class ServerWebSocket {
            if(global_nomes.containsKey(nome) ){
                nome = atribuiNome(global_nomes, nome);
                //informa o motivo do nome alternativo
-               ses.getBasicRemote().sendText("O nome solicitado já está em uso em outra sala, seu nome foi configurado como " + nome + " (Vocês pode renomear utilizando o comando [rename <novo_nome>])");
+               ses.getBasicRemote().sendText("O nome solicitado já está em uso em outra sala, \n"
+                                              + "seu nome foi configurado como " + nome + " \n"
+                                              + "(Você pode renomear utilizando o comando \n"
+                                              + "[rename <novo_nome>])");
            }
            //cria uma sala e atribui um criador 
            salas.put(sala, new Sala(sala, new Usuario(nome, ses, true)));
            //informa para o criador que a sala foi criada
-           ses.getBasicRemote().sendText("Sala: " + sala + " Criada!");
+           ses.getBasicRemote().sendText("Sala \"" + sala + "\" criada com sucesso!");
        }
         global_nomes.put(nome, nome);
         //Exibe os usuários online naquela sala
@@ -94,14 +97,14 @@ public class ServerWebSocket {
         //quabrando a mensagem
         String[] list = message.split(" ");
         //pega as informações de quem mandou a mensagem
-        Usuario remetente       = salas.get(sala).buscaPeloID(ses.getId());
+        Usuario remetente = salas.get(sala).buscaPeloID(ses.getId());
         if (list[0].equals("send")) {
             if(list[1].equals("-u")){
                 Usuario destinatario  = salas.get(sala).buscaPeloNome(list[2]);
                 if (destinatario == null) {
-                    remetente.getSession().getBasicRemote().sendText("Este usuáio não existe!");
+                    remetente.getSession().getBasicRemote().sendText("Este usuário não existe!");
                 }else{
-                    destinatario.getSession().getBasicRemote().sendText(remetente.getNome() + " "  + new SimpleDateFormat("hh:mm:ss").format(Calendar.getInstance().getTime()) + " reservadamente : " + message);
+                    destinatario.getSession().getBasicRemote().sendText("- "+remetente.getNome() + " "  + new SimpleDateFormat("hh:mm:ss").format(Calendar.getInstance().getTime()) + " reservadamente : " + message);
                 }
             }else{ 
                 sendBroadCast(salas.get(sala), remetente.getNome(), message);
