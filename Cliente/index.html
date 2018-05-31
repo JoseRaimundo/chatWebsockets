@@ -9,11 +9,10 @@
   <body>
     <div class="content">
       <h4>Chat WebSockets</h4>
-
       <h6>URL do servidor:</h6>
       <div class="row">
         <!-- Server Url -->
-        <div class="input-field col s7">
+        <div class="input-field col s5">
           <input value="ws://" id="serverUrl" type="text" class="validate">
           <span class="helper-text">Ex.: ws://localhost:8080/Servidor/chat/sala/usuario</span>
         </div>
@@ -32,19 +31,28 @@
           </div>
         </div>
       </div>
-
-
+      <div class="logCard">
+        <!-- Log -->
+        <div class="col s2 m3">
+          <h6 class="h6">Histórico</h6>
+          <div class="cardUsers card-panel teal #fff9c4 yellow lighten-4">
+            <span id="log"></span>
+          </div>
+        </div>
+      </div>
       <div class="row messageAllign">
         <h6>Mensagem:</h6>
         <!-- Request message -->
-        <div class="input-field col s7">
+        <div class="input-field col s5">
           <i class="material-icons prefix">message</i>
           <textarea id="sendMessage" class="materialize-textarea" disabled="disabled"></textarea>
         </div>
         <!-- Send button -->
-        <button class="btn waves-effect waves-light" id="sendButton" disabled="disabled" type="submit" name="action">Enviar
-          <i class="material-icons right">send</i>
-        </button>
+        <div class="col s2">
+          <button class="btn waves-effect waves-light" id="sendButton" disabled="disabled" type="submit" name="action">Enviar
+            <i class="material-icons right">send</i>
+          </button>
+        </div>
       </div>
 
       <div class="divider" ></div>
