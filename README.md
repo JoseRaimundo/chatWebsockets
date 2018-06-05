@@ -1,6 +1,8 @@
 # Mini-Projeto II – Chat Multi-salas
 ## Descrição
 
+Equipe: José Raimundo & Talitha Alessandra
+
 Desenvolva uma aplicação que permita um chat, em grupo, com possíveis salas. Não há limites para o número de participantes em cada sala, nem do numero de salas. No entanto, um usuário só pode participar de uma sala, por vez. 
 No chat, a qualquer momento um usuário poderá enviar/receber mensagens ou ate mesmo renomear seu nome. A mensagem poderá ser enviada a sala (permitindo que todos os participantes a vejam) ou, reservadamente, a um usuário específico, que esteja na mesma sala. Se usuário solicitar sua renomeação (informando o novo nome desejado), o sistema devera informar ao usuário que seu nome foi alterado com sucesso, caso o novo nome não exista na sala. Alem disso, o sistema devera informar a todos a alteração que ocorreu, informando o nome anterior e o atual. 
 Cada mensagem aparecerá na sala, para os usuários, no seguinte formato (exceto quando não for uma mensagem reservada):
